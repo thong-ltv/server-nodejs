@@ -6,8 +6,8 @@ const Product = require("./models/product.model.js");
 const productRoute = require("./routes/product.route.js");
 const postRoute = require("./routes/post.route.js");
 const emailRoute = require("./routes/email.route.js");
+const userRoute = require("./routes/user.route.js");
 const session = require("./session/session.js");
-const authRoute = require("./routes/auth.route.js");
 
 // dùng limiter để giới hạn lại số lần mà client có thể gởi mail
 const limiter = require("./limits/limit.js");
@@ -23,20 +23,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 //session setup
-app.use(session);
+// app.use(session);
 
 //routes
 app.use("/api/products", productRoute);
 app.use("/api/post", postRoute);
 app.use("/api/email", emailRoute);
-//roputer này dùng để xác thực
-// app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
+
 const { google } = require("googleapis");
 
 const oauth2Client = new google.auth.OAuth2(
-  "1065840918733-vkim54t42rqhc7t7rorp0b0hvdbps5f5.apps.googleusercontent.com",
-  "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",
-  "http://localhost:3000/api/auth/send"
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  process.env.REDIRECT_URI
 );
 
 app.get("/api/auth/google", (req, res) => {
@@ -58,61 +58,7 @@ app.get("/api/auth/send", async (req, res) => {
   }
 });
 
-app.post("/api/mail/sendMail", (req, res) => {
-  const { google } = require("googleapis");
-
-  function makeBody(to, from, subject, message) {
-    const str = [
-      'Content-Type: text/plain; charset="UTF-8"\n',
-      "MIME-Version: 1.0\n",
-      "Content-Transfer-Encoding: 7bit\n",
-      "to: ",
-      to,
-      "\n",
-      "from: ",
-      from,
-      "\n",
-      "subject: ",
-      subject,
-      "\n\n",
-      message,
-    ].join("");
-
-    const encodedMail = Buffer.from(str)
-      .toString("base64")
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=+$/, "");
-
-    return { raw: encodedMail };
-  }
-
-  async function sendEmail(auth, to, from, subject, message) {
-    const gmail = google.gmail({ version: "v1", auth });
-    const email = makeBody(to, from, subject, message);
-
-    try {
-      const response = await gmail.users.messages.send({
-        userId: "me",
-        requestBody: email,
-      });
-      console.log("Email sent: ", response.data);
-      console.log(auth);
-    } catch (error) {
-      console.error("Failed to send email: ", error);
-    }
-  }
-
-  const recipients = ["thonghoaixuan@gmail.com", "thongltv.nina@gmail.com"]; // Danh sách email người nhận
-  const from = "thonglaptrinhvien@gmail.com";
-  const subject = "Hello from Node.js!";
-  const message =
-    "This is a test email sent via Gmail API with OAuth2 authentication.";
-
-  recipients.forEach((recipient) => {
-    sendEmail(oauth2Client, recipient, from, subject, message);
-  });
-});
+app.post("/api/mail/sendMail", (req, res) => {});
 
 app.post("/api/email", limiter);
 

@@ -1,11 +1,19 @@
 const express = require("express");
 
-const { createEmail, getEmails } = require("../controllers/email.controller");
+const {
+  deleteEmail,
+  getEmails,
+  deleteAllEmai,
+} = require("../controllers/email.controller");
 
 const router = express.Router();
 
-router.post("/", createEmail);
+// router.post("/", createEmail);
 
 router.get("/", getEmails);
+
+router.delete("/:id", deleteEmail);
+
+router.delete("/", deleteAllEmai);
 
 module.exports = router;

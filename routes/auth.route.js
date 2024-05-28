@@ -1,14 +1,14 @@
-const express = require("express");
+// const express = require("express");
 
-const {
-  googleAuth,
-  oauth2callback,
-} = require("../controllers/auth.controller.js");
+// const {
+//   googleAuth,
+//   oauth2callback,
+// } = require("../controllers/auth.controller.js");
 
-const router = express.Router();
+// const router = express.Router();
 
-router.get("/google", googleAuth);
+// router.get("/google", googleAuth);
 
-router.get("/send", oauth2callback);
+// router.get("/send", oauth2callback);
 
-module.exports = router;
+// module.exports = router;
