@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 
 // Using Node.js `require()`
 const mongoose = require("mongoose");
@@ -15,6 +16,9 @@ const limiter = require("./limits/limit.js");
 const app = express();
 
 const cors = require("cors");
+
+// Cung cấp các tệp tĩnh trong thư mục 'uploads'
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //middleware
 app.use(express.json()); //de hieu du lieu dau vao la json

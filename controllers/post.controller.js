@@ -1,8 +1,20 @@
 const Post = require("../models/post.model.js");
 
+const fs = require("fs");
+
 const createPost = async (req, res) => {
   try {
-    const post = await Post.create(req.body);
+    const title = req.body.title;
+    const content = req.body.content;
+    const file = req.file;
+
+    const body = {
+      title: title,
+      content: content,
+      file: file.path,
+    };
+
+    const post = await Post.create(body);
     res.status(200).json({ message: "success" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -37,6 +49,13 @@ const deletePost = async (req, res) => {
     const { id } = req.params;
 
     const post = await Post.findByIdAndDelete(id);
+
+    const path = post.file.replace(/\\/g, "/");
+
+    fs.unlink(path, (err) => {
+      if (err) throw err;
+      console.log("file deleted!");
+    });
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
