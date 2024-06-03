@@ -11,6 +11,11 @@ const PostSchema = mongoose.Schema(
       type: String,
       required: [true, "Vui lòng nhập title của bài viết"],
     },
+
+    file: {
+      type: String,
+      require: [true],
+    },
   },
   {
     Timestamp: true,
