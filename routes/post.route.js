@@ -5,6 +5,7 @@ const {
   getPosts,
   deletePost,
   getPost,
+  updatePost,
 } = require("../controllers/post.controller");
 
 const multer = require("multer");
@@ -31,5 +32,7 @@ router.get("/", getPosts);
 router.get("/:id", getPost);
 
 router.delete("/:id", deletePost);
+
+router.put("/:id", updatePost);
 
 module.exports = router;

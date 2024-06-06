@@ -25,6 +25,10 @@ const EmailSchema = mongoose.Schema(
       lowercase: true, //đảm bảo được chuyển thành chữ thường
       trim: true, //loại bỏ khoảng trắng
     },
+
+    created_at: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

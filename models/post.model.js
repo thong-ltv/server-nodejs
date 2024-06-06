@@ -16,6 +16,30 @@ const PostSchema = mongoose.Schema(
       type: String,
       require: [true],
     },
+
+    alt_file: {
+      type: String,
+    },
+
+    slug: {
+      type: String,
+    },
+
+    description: {
+      type: String,
+    },
+
+    user_id: {
+      type: Number,
+    },
+
+    status: {
+      type: String,
+    },
+
+    created_at: {
+      type: Date,
+    },
   },
   {
     Timestamp: true,
